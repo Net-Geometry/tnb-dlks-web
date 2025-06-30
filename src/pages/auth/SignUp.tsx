@@ -1,6 +1,11 @@
 import { UserAuth } from '@/context/AuthContext';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Button } from '@/component/ui/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/component/ui/Card'
+import { Input } from '@/component/ui/Input'
+import { Label } from '@/component/ui/Label'
+import { ThemeToggle } from '@/component/ui/ThemeToggle'
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +16,6 @@ const SignUp = () => {
   const { session, signUpNewUser } = UserAuth();
   const navigate = useNavigate();
   console.log(email, password, session);
-  // console.log(session);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,9 +25,7 @@ const SignUp = () => {
       const response = await signUpNewUser(email, password);
       if (response.success) {
         console.log("Sign up successful:", response.data);
-        // Redirect or show success message
-        navigate('/dashboard'); // Assuming you want to redirect to the home page after sign up
-
+        navigate('/dashboard');
       } else {
         setError(response.error || "An error occurred during sign up.");
       }
@@ -35,39 +37,56 @@ const SignUp = () => {
     }
   }
 
-
   return (
-    <div>
-      <form onSubmit={handleSignUp} className='max-w-md m-auto pt-24'>
-        <h2 className='font-bold pb-2'>Sign up!</h2>
-        <p>
-          Already have an account? <Link to={"/signin"}>Sign in</Link>
-        </p>
-        <div className='flex flex-col py-4'>
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            className="p-3 mt-6"
-            type="email"
-            id="email"
-            name="email"
-            placeholder='Email'
-            required
-          />
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            className="p-3 mt-6"
-            type='password'
-            id='password'
-            name='password'
-            placeholder='Password'
-            required
-          />
-          <button type='submit' disabled={loading} className='mt-4 w-full'>
-            Sign Up
-          </button>
-          {error && <p className='text-red-500 mt-2'>{error}</p>}
-        </div>
-      </form>
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
+          <CardDescription>
+            Already have an account?{' '}
+            <Link to="/signin" className="text-primary hover:underline">
+              Sign in
+            </Link>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">
+                Email
+              </Label>
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">
+                Password
+              </Label>
+              <Input
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            {error && <p className="text-destructive text-sm">{error}</p>}
+            <Button type="submit" disabled={loading} className="w-full">
+              {loading ? 'Creating Account...' : 'Sign Up'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }
