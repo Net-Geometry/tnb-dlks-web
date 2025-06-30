@@ -1,7 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "@/context/AuthContext";
 import { publicRoutes } from "@/routes/PublicRoutes";
 import { privateRoutes } from "@/routes/PrivateRoutes";
+import DashboardLayout from "@/component/layout/DashboardLayout";
+import ProtectedRoute from "@/pages/auth/ProtectedRoute";
+
 
 function App() {
 
@@ -9,17 +12,30 @@ function App() {
     <AuthContextProvider>
       <Router>
         <Routes>
+
           {/* Public Routes */}
-          {publicRoutes}
+          {publicRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.element}
+            />
+          ))}
 
           {/* Private Routes */}
-          {privateRoutes}
-
-          {/* Default Route */}
-          <Route
-            path="/"
-            element={<Navigate to="/dashboard" replace />}
-          />
+          {privateRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    {route.element}
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+          ))}
 
           {/* Unknown Routes - 404 */}
           <Route path="*" element={<div>Page Not Found</div>} />
