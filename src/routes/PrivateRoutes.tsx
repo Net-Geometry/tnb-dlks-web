@@ -1,20 +1,15 @@
-import { Route } from "react-router-dom";
 import Dashboard from '@/pages/Dashboard';
-import DashboardLayout from "@/component/layout/DashboardLayout";
-import ProtectedRoute from "@/pages/auth/ProtectedRoute";
+import { Navigate } from 'react-router-dom';
 
 export const privateRoutes = [
-  <Route
-    key="dashboard"
-    path="/dashboard"
-    element={
-      <ProtectedRoute>
-        <DashboardLayout>
-          <Dashboard />
-        </DashboardLayout>
-      </ProtectedRoute>
-    }
-  />,
+  {
+    path: "/",
+    element: <Navigate to="/dashboard" replace />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
   // Add more private routes here as your app grows
 ];
 
