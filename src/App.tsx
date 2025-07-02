@@ -1,51 +1,27 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/context/ThemeContext";
-import { publicRoutes } from "@/routes/PublicRoutes";
-import { privateRoutes } from "@/routes/PrivateRoutes";
-import DashboardLayout from "@/component/layout/DashboardLayout";
-import ProtectedRoute from "@/pages/auth/ProtectedRoute";
-
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { Toaster } from "@/components/ui/sonner";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
 
 function App() {
-
   return (
-    <ThemeProvider defaultTheme="light" storageKey="dlks-ui-theme">
-      <AuthContextProvider>
-        <Router>
-          <Routes>
-
-            {/* Public Routes */}
-            {publicRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-
-            {/* Private Routes */}
-            {privateRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
-                  <ProtectedRoute>
-                    <DashboardLayout>
-                      {route.element}
-                    </DashboardLayout>
-                  </ProtectedRoute>
-                }
-              />
-            ))}
-
-            {/* Unknown Routes - 404 */}
-            <Route path="*" element={<div>Page Not Found</div>} />
-          </Routes>
-        </Router>
-      </AuthContextProvider>
-    </ThemeProvider>
-  )
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="system" storageKey="dlks-ui-theme">
+        <AuthContextProvider>
+          <Router>
+            <Routes>
+              <Route path="/*" element={<Index />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
+          </Router>
+        </AuthContextProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
 }
 
-export default App
+export default App;
