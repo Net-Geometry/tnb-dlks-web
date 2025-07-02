@@ -3,14 +3,9 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { Button } from '@/component/ui/Button'
 import { Avatar, AvatarFallback } from '@/component/ui/Avatar'
 import { UserAuth } from '@/context/AuthContext'
+import { menuItems } from '@/config/menuItems'
+import { getFilteredMenuItems, User } from '@/utils/permissions'
 import { 
-  Home, 
-  Briefcase, 
-  ShoppingCart, 
-  FileText, 
-  Activity, 
-  Users, 
-  Settings, 
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -27,7 +22,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const navigate = useNavigate()
 
   // Mock user data - replace this with actual user data from your backend
-  const user = session?.user ? {
+  const user: User | null = session?.user ? {
     name: session.user.email?.split('@')[0] || 'User',
     email: session.user.email || '',
     role: 'Admin', // This should come from your user profile/database
@@ -38,29 +33,6 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const handleLogout = async () => {
     await signOut()
     navigate('/signin')
-  }
-
-  const menuItems = [
-    { icon: Home, label: 'Dashboard', path: '/dashboard', key: 'dashboard' },
-    { icon: Briefcase, label: 'Work Management', path: '/work-management', key: 'work' },
-    { icon: ShoppingCart, label: 'Purchase Order', path: '/purchase-order', key: 'po' },
-    { icon: FileText, label: 'JIB', path: '/jib', key: 'jib' },
-    { icon: Activity, label: 'LKS Status', path: '/lks-status', key: 'lks' },
-    { icon: Users, label: 'User Management', path: '/user-management', key: 'users' },
-    { icon: Settings, label: 'Settings', path: '/settings', key: 'settings' },
-  ]
-
-  // Filter menu items based on user permissions
-  const getFilteredMenuItems = () => {
-    if (user?.role === 'TNB Super Admin' || user?.role === 'Admin') return menuItems
-    
-    // Filter based on user level and permissions
-    return menuItems.filter(item => {
-      if (item.key === 'users' && !user?.permissions?.includes('manage_users')) {
-        return false
-      }
-      return true
-    })
   }
 
   return (
@@ -94,7 +66,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          {getFilteredMenuItems().map((item) => (
+          {getFilteredMenuItems(menuItems, user).map((item) => (
             <li key={item.key}>
               <NavLink
                 to={item.path}
