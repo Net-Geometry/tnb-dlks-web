@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import LoginPage from "@/components/auth/LoginPage";
 import SignUpPage from "@/components/auth/SignUpPage";
 import Dashboard from "@/components/dashboard/Dashboard";
+import NotFound from "./NotFound";
 import { useAuth } from "@/context/AuthContext";
 import { LoadingPage } from "@/components/ui/loading";
 import { ProtectedRoutes } from "@/routes/routes";
@@ -38,6 +39,9 @@ const Index = () => {
         ))}
 
         <Route path="/" element={<Navigate to="/login" replace />} />
+        
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

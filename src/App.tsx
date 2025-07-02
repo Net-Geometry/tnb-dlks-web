@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { Toaster } from "@/components/ui/sonner";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
           <Router>
             <Routes>
               <Route path="/*" element={<Index />} />
-              <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
           </Router>
