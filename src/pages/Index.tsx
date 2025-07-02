@@ -10,7 +10,7 @@ import { ProtectedRoutes } from "@/routes/routes";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 const Index = () => {
@@ -25,7 +25,7 @@ const Index = () => {
         {ProtectedRoutes.map((route) => (
           <Route
             key={route.path}
-            path={route.path === "/" ? "/dashboard" : route.path}
+            path={route.path}
             element={
               <ProtectedRoute>
                 <Dashboard>
@@ -38,8 +38,9 @@ const Index = () => {
           />
         ))}
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        
+        {/* Root route - should redirect based on auth state */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>

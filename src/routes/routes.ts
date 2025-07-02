@@ -49,7 +49,7 @@ export interface RouteConfig {
 export const ProtectedRoutes: RouteConfig[] = [
   // Dashboard Module
   {
-    path: "/",
+    path: "/dashboard",
     element: DashboardHome,
     title: "Dashboard Home",
     module: "Dashboard",
