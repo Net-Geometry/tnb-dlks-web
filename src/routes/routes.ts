@@ -1,25 +1,42 @@
-
-import { lazy } from 'react';
+import { lazy } from "react";
 
 // Lazy load components for better performance
-const DashboardHome = lazy(() => import('@/components/dashboard/DashboardHome'));
-const WorkManagement = lazy(() => import('@/components/modules/WorkManagement'));
-const AMKAKKManagement = lazy(() => import('@/components/modules/AMKAKKManagement'));
-const AMKForm = lazy(() => import('@/components/modules/AMKForm'));
-const AKKForm = lazy(() => import('@/components/modules/AKKForm'));
-const PurchaseOrder = lazy(() => import('@/components/modules/PurchaseOrder'));
-const CreatePurchaseOrderPage = lazy(() => import('@/components/modules/CreatePurchaseOrderPage'));
-const PurchaseOrderDetail = lazy(() => import('@/components/modules/PurchaseOrderDetail'));
-const PurchaseOrderWorkSummary = lazy(() => import('@/components/modules/PurchaseOrderWorkSummary'));
-const NewLKHPage = lazy(() => import('@/components/modules/NewLKHPage'));
-const LKHDetail = lazy(() => import('@/components/modules/LKHDetail'));
-const LKSSubmissionPage = lazy(() => import('@/components/modules/LKSSubmissionPage'));
-const LKSStatus = lazy(() => import('@/components/modules/LKSStatus'));
-const LKSDetail = lazy(() => import('@/components/modules/LKSDetail'));
-const JIBModule = lazy(() => import('@/components/modules/JIBModule'));
-const UserManagement = lazy(() => import('@/components/modules/UserManagement'));
-const Settings = lazy(() => import('@/components/modules/Settings'));
-const WorkOrderDetailWrapper = lazy(() => import('@/components/modules/WorkOrderDetailWrapper'));
+const DashboardHome = lazy(
+  () => import("@/components/dashboard/DashboardHome")
+);
+const WorkManagement = lazy(
+  () => import("@/components/modules/WorkManagement")
+);
+const AMKAKKManagement = lazy(
+  () => import("@/components/modules/AMKAKKManagement")
+);
+const AMKForm = lazy(() => import("@/components/modules/AMKForm"));
+const AKKForm = lazy(() => import("@/components/modules/AKKForm"));
+const PurchaseOrder = lazy(() => import("@/components/modules/PurchaseOrder"));
+const CreatePurchaseOrderPage = lazy(
+  () => import("@/components/modules/CreatePurchaseOrderPage")
+);
+const PurchaseOrderDetail = lazy(
+  () => import("@/components/modules/PurchaseOrderDetail")
+);
+const PurchaseOrderWorkSummary = lazy(
+  () => import("@/components/modules/PurchaseOrderWorkSummary")
+);
+const NewLKHPage = lazy(() => import("@/components/modules/NewLKHPage"));
+const LKHDetail = lazy(() => import("@/components/modules/LKHDetail"));
+const LKSSubmissionPage = lazy(
+  () => import("@/components/modules/LKSSubmissionPage")
+);
+const LKSStatus = lazy(() => import("@/components/modules/LKSStatus"));
+const LKSDetail = lazy(() => import("@/components/modules/LKSDetail"));
+const JIBModule = lazy(() => import("@/components/modules/JIBModule"));
+const UserManagement = lazy(
+  () => import("@/components/modules/UserManagement")
+);
+const Settings = lazy(() => import("@/components/modules/Settings"));
+const WorkOrderDetailWrapper = lazy(
+  () => import("@/components/modules/WorkOrderDetailWrapper")
+);
 
 export interface RouteConfig {
   path: string;
@@ -29,13 +46,13 @@ export interface RouteConfig {
 }
 
 // Organized routes by module
-export const dashboardRoutes: RouteConfig[] = [
+export const ProtectedRoutes: RouteConfig[] = [
   // Dashboard Module
   {
     path: "/",
     element: DashboardHome,
     title: "Dashboard Home",
-    module: "Dashboard"
+    module: "Dashboard",
   },
 
   // Work Management Module
@@ -43,13 +60,13 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/work-management",
     element: WorkManagement,
     title: "Work Management",
-    module: "Work Management"
+    module: "Work Management",
   },
   {
     path: "/work-order/detail/:id/:documentType",
     element: WorkOrderDetailWrapper,
     title: "Work Order Detail",
-    module: "Work Management"
+    module: "Work Management",
   },
 
   // AMK/AKK Management Module
@@ -57,19 +74,19 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/amk-akk-management",
     element: AMKAKKManagement,
     title: "AMK/AKK Management",
-    module: "AMK/AKK Management"
+    module: "AMK/AKK Management",
   },
   {
     path: "/amk-form",
     element: AMKForm,
     title: "AMK Form",
-    module: "AMK/AKK Management"
+    module: "AMK/AKK Management",
   },
   {
     path: "/akk-form",
     element: AKKForm,
     title: "AKK Form",
-    module: "AMK/AKK Management"
+    module: "AMK/AKK Management",
   },
 
   // Purchase Order Module
@@ -77,25 +94,25 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/purchase-order",
     element: PurchaseOrder,
     title: "Purchase Orders",
-    module: "Purchase Order"
+    module: "Purchase Order",
   },
   {
     path: "/purchase-order/create",
     element: CreatePurchaseOrderPage,
     title: "Create Purchase Order",
-    module: "Purchase Order"
+    module: "Purchase Order",
   },
   {
     path: "/purchase-order/detail/:id",
     element: PurchaseOrderDetail,
     title: "Purchase Order Detail",
-    module: "Purchase Order"
+    module: "Purchase Order",
   },
   {
     path: "/purchase-order/work-summary/:id",
     element: PurchaseOrderWorkSummary,
     title: "Purchase Order Work Summary",
-    module: "Purchase Order"
+    module: "Purchase Order",
   },
 
   // LKH Module
@@ -103,13 +120,13 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/purchase-order/work-summary/:id/new-lkh/:serviceId",
     element: NewLKHPage,
     title: "New LKH",
-    module: "LKH"
+    module: "LKH",
   },
   {
     path: "/lkh-detail/:id",
     element: LKHDetail,
     title: "LKH Detail",
-    module: "LKH"
+    module: "LKH",
   },
 
   // LKS Module
@@ -117,19 +134,19 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/lks-submission",
     element: LKSSubmissionPage,
     title: "LKS Submission",
-    module: "LKS"
+    module: "LKS",
   },
   {
     path: "/lks-status",
     element: LKSStatus,
     title: "LKS Status",
-    module: "LKS"
+    module: "LKS",
   },
   {
     path: "/lks-detail/:id",
     element: LKSDetail,
     title: "LKS Detail",
-    module: "LKS"
+    module: "LKS",
   },
 
   // JIB Module
@@ -137,7 +154,7 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/jib",
     element: JIBModule,
     title: "JIB",
-    module: "JIB"
+    module: "JIB",
   },
 
   // Administration Module
@@ -145,18 +162,18 @@ export const dashboardRoutes: RouteConfig[] = [
     path: "/user-management",
     element: UserManagement,
     title: "User Management",
-    module: "Administration"
+    module: "Administration",
   },
   {
     path: "/settings",
     element: Settings,
     title: "Settings",
-    module: "Administration"
-  }
+    module: "Administration",
+  },
 ];
 
 // Group routes by module for easier navigation
-export const routesByModule = dashboardRoutes.reduce((acc, route) => {
+export const routesByModule = ProtectedRoutes.reduce((acc, route) => {
   if (!acc[route.module]) {
     acc[route.module] = [];
   }

@@ -1,10 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Suspense } from "react";
 import LoginPage from "@/components/auth/LoginPage";
+import SignUpPage from "@/components/auth/SignUpPage";
 import Dashboard from "@/components/dashboard/Dashboard";
 import { useAuth } from "@/context/AuthContext";
 import { LoadingPage } from "@/components/ui/loading";
-import { dashboardRoutes } from "@/routes/routes";
+import { ProtectedRoutes } from "@/routes/routes";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -15,10 +16,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Routes>
+        {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
 
         {/* Protected dashboard routes */}
-        {dashboardRoutes.map((route) => (
+        {ProtectedRoutes.map((route) => (
           <Route
             key={route.path}
             path={route.path === "/" ? "/dashboard" : route.path}
