@@ -7,6 +7,7 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   signUpNewUser: (
     email: string,
     password: string
@@ -29,6 +30,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   //Sign Up
   const signUpNewUser = async (email: string, password: string) => {
@@ -79,6 +81,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsAuthenticated(!!session);
+      setIsLoading(false);
     });
 
     // Listen for auth changes
@@ -88,6 +91,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsAuthenticated(!!session);
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -111,6 +115,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         session,
         user,
         isAuthenticated,
+        isLoading,
         signUpNewUser,
         signInUser,
         signOut,
