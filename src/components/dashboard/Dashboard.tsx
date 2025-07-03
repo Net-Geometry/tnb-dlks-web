@@ -11,7 +11,7 @@ const Dashboard = ({ children }: DashboardProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-background flex">
       <Sidebar collapsed={sidebarCollapsed} onToggle={setSidebarCollapsed} />
       
       <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-64'}`}>

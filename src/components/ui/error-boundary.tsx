@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-background p-4">
           <div className="max-w-md w-full">
             <Alert variant="destructive" className="mb-4">
               <AlertTriangle className="h-4 w-4" />
@@ -64,11 +64,11 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
 
             {process.env.NODE_ENV === "development" && this.state.error && (
-              <details className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                <summary className="cursor-pointer text-sm font-medium">
+              <details className="mt-4 p-4 bg-muted rounded-lg">
+                <summary className="cursor-pointer text-sm font-medium text-foreground">
                   Error Details (Development)
                 </summary>
-                <pre className="mt-2 text-xs text-red-600 dark:text-red-400 whitespace-pre-wrap">
+                <pre className="mt-2 text-xs text-destructive whitespace-pre-wrap">
                   {this.state.error.stack}
                 </pre>
               </details>
