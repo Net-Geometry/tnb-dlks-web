@@ -26,13 +26,13 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
 export const LoadingPage: React.FC = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="text-center">
         <LoadingSpinner
           size="lg"
-          className="text-purple-600 dark:text-purple-400 mb-4"
+          className="text-primary mb-4"
         />
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>
   );

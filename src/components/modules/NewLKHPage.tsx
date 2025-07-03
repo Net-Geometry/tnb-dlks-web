@@ -126,7 +126,7 @@ const NewLKHPage: React.FC = () => {
     });
     
     // Navigate back to work summary with success message
-    navigate(`/dashboard/purchase-order/work-summary/${id}`);
+    navigate(`/purchase-order/work-summary/${id}`);
   };
 
   const handleSaveDraft = () => {
@@ -139,11 +139,11 @@ const NewLKHPage: React.FC = () => {
     });
     
     // Optionally navigate back or stay on the current step
-    // navigate(`/dashboard/purchase-order/work-summary/${id}`);
+    // navigate(`/purchase-order/work-summary/${id}`);
   };
 
   const handleBackToWorkSummary = () => {
-    navigate(`/dashboard/purchase-order/work-summary/${id}`);
+    navigate(`/purchase-order/work-summary/${id}`);
   };
 
   const renderStepContent = () => {

@@ -201,12 +201,12 @@ const AKKCreationForm = () => {
         description: `${akkId} has been sent to ${formData.contractorName} for immediate acknowledgement. Status: Pending Acknowledgement`,
       });
       
-      navigate('/dashboard/amk-akk-management');
+      navigate('/amk-akk-management');
     }
   };
 
   const handleCancel = () => {
-    navigate('/dashboard/amk-akk-management');
+    navigate('/amk-akk-management');
   };
 
   return (

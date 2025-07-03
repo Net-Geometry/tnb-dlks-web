@@ -230,11 +230,11 @@ const LKSStatus = () => {
   const stats = getSubmissionStats();
 
   const handleCreateNewLKS = () => {
-    navigate("/dashboard/lks-submission");
+    navigate("/lks-submission");
   };
 
   const handleViewDetails = (submissionId: string) => {
-    navigate(`/dashboard/lks-detail/${submissionId}`);
+    navigate(`/lks-detail/${submissionId}`);
   };
 
   return (

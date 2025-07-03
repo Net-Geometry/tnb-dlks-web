@@ -44,7 +44,7 @@ const LKSSubmissionPage: React.FC = () => {
       });
       
       // Navigate back to LKS status page
-      navigate('/dashboard/lks-status');
+      navigate('/lks-status');
     } catch (error) {
       toast({
         title: "Submission Failed",
@@ -84,7 +84,7 @@ const LKSSubmissionPage: React.FC = () => {
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
-            onClick={() => navigate('/dashboard/lks-status')}
+            onClick={() => navigate('/lks-status')}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />

@@ -70,15 +70,15 @@ const PurchaseOrder = () => {
   };
 
   const handleCreatePO = () => {
-    navigate('/dashboard/purchase-order/create');
+    navigate('/purchase-order/create');
   };
 
   const handleViewDetails = (orderId: string) => {
-    navigate(`/dashboard/purchase-order/detail/${orderId}`);
+    navigate(`/purchase-order/detail/${orderId}`);
   };
 
   const handleWorkSummary = (orderId: string) => {
-    navigate(`/dashboard/purchase-order/work-summary/${orderId}`);
+    navigate(`/purchase-order/work-summary/${orderId}`);
   };
 
   return (

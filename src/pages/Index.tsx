@@ -3,13 +3,14 @@ import { Suspense } from "react";
 import LoginPage from "@/components/auth/LoginPage";
 import SignUpPage from "@/components/auth/SignUpPage";
 import Dashboard from "@/components/dashboard/Dashboard";
+import NotFound from "./NotFound";
 import { useAuth } from "@/context/AuthContext";
 import { LoadingPage } from "@/components/ui/loading";
 import { ProtectedRoutes } from "@/routes/routes";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 const Index = () => {
@@ -24,7 +25,7 @@ const Index = () => {
         {ProtectedRoutes.map((route) => (
           <Route
             key={route.path}
-            path={route.path === "/" ? "/dashboard" : route.path}
+            path={route.path}
             element={
               <ProtectedRoute>
                 <Dashboard>
@@ -37,7 +38,11 @@ const Index = () => {
           />
         ))}
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Root route - should redirect based on auth state */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

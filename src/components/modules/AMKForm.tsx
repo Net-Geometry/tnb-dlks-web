@@ -105,7 +105,7 @@ const AMKForm = () => {
         <div className="flex items-center gap-4 mb-6">
           <Button 
             variant="ghost" 
-            onClick={() => navigate('/dashboard/work-management')}
+            onClick={() => navigate('/work-management')}
             className="p-2"
           >
             <ArrowLeft className="w-5 h-5" />

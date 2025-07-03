@@ -55,11 +55,11 @@ const PurchaseOrderDetail = () => {
   };
 
   const handleBackToPO = () => {
-    navigate('/dashboard/purchase-order');
+    navigate('/purchase-order');
   };
 
   const handleEdit = () => {
-    navigate(`/dashboard/purchase-order/edit/${id}`);
+    navigate(`/purchase-order/edit/${id}`);
   };
 
   const handlePrint = () => {
