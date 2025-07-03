@@ -8,7 +8,7 @@ const WorkOrderDetailWrapper: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate('/dashboard/amk-akk-management');
+    navigate('/amk-akk-management');
   };
 
   if (!id || !documentType) {

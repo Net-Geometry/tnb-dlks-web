@@ -204,7 +204,7 @@ const PurchaseOrderWorkSummary = () => {
   };
 
   const handleBackToPODetails = () => {
-    navigate(`/dashboard/purchase-order/detail/${id}`);
+    navigate(`/purchase-order/detail/${id}`);
   };
 
   const handlePrint = () => {
@@ -265,7 +265,7 @@ const PurchaseOrderWorkSummary = () => {
   };
 
   const handleNewLKH = (serviceId: string) => {
-    navigate(`/dashboard/purchase-order/work-summary/${id}/new-lkh/${serviceId}`);
+    navigate(`/purchase-order/work-summary/${id}/new-lkh/${serviceId}`);
     console.log('Navigating to new LKH page for service:', serviceId);
   };
 
@@ -274,7 +274,7 @@ const PurchaseOrderWorkSummary = () => {
   };
 
   const handleViewLKH = (lkhId: string) => {
-    navigate(`/dashboard/lkh-detail/${lkhId}`);
+    navigate(`/lkh-detail/${lkhId}`);
     console.log('Navigating to LKH detail page for:', lkhId);
   };
 

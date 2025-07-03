@@ -146,7 +146,7 @@ const LKSDetail: React.FC = () => {
             <AlertCircle className="w-12 h-12 mx-auto text-red-500 mb-4" />
             <h2 className="text-xl font-semibold mb-2">LKS Not Found</h2>
             <p className="text-gray-600 mb-4">The requested LKS submission could not be found.</p>
-            <Button onClick={() => navigate('/dashboard/lks-status')}>
+            <Button onClick={() => navigate('/lks-status')}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to LKS Status
             </Button>
@@ -218,7 +218,7 @@ const LKSDetail: React.FC = () => {
           <div className="flex items-center gap-4 mb-4">
             <Button
               variant="ghost"
-              onClick={() => navigate('/dashboard/lks-status')}
+              onClick={() => navigate('/lks-status')}
               className="flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />

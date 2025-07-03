@@ -149,12 +149,12 @@ const CreatePurchaseOrderPage = () => {
         title: "Purchase Order Created",
         description: `PO ${formData.poNumber} has been created successfully.`,
       });
-      navigate('/dashboard/purchase-order');
+      navigate('/purchase-order');
     }
   };
 
   const handleCancel = () => {
-    navigate('/dashboard/purchase-order');
+    navigate('/purchase-order');
   };
 
   const formatCurrency = (value: string) => {
