@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Suspense } from "react";
 import LoginPage from "@/components/auth/LoginPage";
 import SignUpPage from "@/components/auth/SignUpPage";
-import Dashboard from "@/components/dashboard/Dashboard";
+import { DashboardLayout } from "@/components/layout";
 import NotFound from "./NotFound";
 import { LoadingPage } from "@/components/ui/loading";
 import { ProtectedRoutes } from "@/routes/routes";
@@ -23,11 +23,11 @@ const Index = () => {
             path={route.path}
             element={
               <ProtectedRoute>
-                <Dashboard>
+                <DashboardLayout>
                   <Suspense fallback={<LoadingPage />}>
                     <route.element />
                   </Suspense>
-                </Dashboard>
+                </DashboardLayout>
               </ProtectedRoute>
             }
           />
