@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import PageHeader from "@/components/ui/page-header";
 import { 
   Plus, 
   Search, 
@@ -89,17 +90,18 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
-          <p className="text-gray-600 mt-1">Manage system users, roles, and permissions</p>
-        </div>
-        <Button className="flex items-center gap-2">
+    <div className="min-h-screen bg-gray-50 w-full">
+      <PageHeader 
+        title="User Management"
+        subtitle="Manage system users, roles, and permissions"
+      >
+        <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 flex items-center gap-2" variant="outline">
           <Plus className="w-4 h-4" />
           Add New User
         </Button>
-      </div>
+      </PageHeader>
+
+      <div className="w-full px-6 py-8 space-y-6">
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -264,6 +266,7 @@ const UserManagement = () => {
             </CardContent>
           </Card>
         ))}
+      </div>
       </div>
     </div>
   );
