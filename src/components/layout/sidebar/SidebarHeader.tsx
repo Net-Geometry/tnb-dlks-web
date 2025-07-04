@@ -31,10 +31,10 @@ export const SidebarHeader = ({ collapsed, onToggle }: SidebarHeaderProps) => {
         {!collapsed && (
           <div className="min-w-0 flex-1 transition-all duration-300">
             <h1 className="font-bold text-lg text-gray-900 dark:text-gray-100 truncate">
-              DLKS Phase 2
+              Digital LKS
             </h1>
             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-              TNB Work System
+              Laporan Kerja Selesai
             </p>
           </div>
         )}

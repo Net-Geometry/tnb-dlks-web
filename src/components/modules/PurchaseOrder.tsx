@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import PageHeader from "@/components/ui/page-header";
 import { 
   Plus, 
   Search, 
@@ -82,15 +83,18 @@ const PurchaseOrder = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Purchase Order Management</h1>
+    <div className="min-h-screen bg-gray-50 w-full">
+      <PageHeader 
+        title="Purchase Order Management"
+        subtitle="Create and manage purchase orders for electrical equipment and services"
+      >
         <Button className="flex items-center gap-2" onClick={handleCreatePO}>
           <Plus className="w-4 h-4" />
           Create Purchase Order
         </Button>
-      </div>
+      </PageHeader>
+
+      <div className="w-full px-6 py-8 space-y-6">
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -216,6 +220,7 @@ const PurchaseOrder = () => {
             </CardContent>
           </Card>
         ))}
+      </div>
       </div>
     </div>
   );

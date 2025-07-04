@@ -46,12 +46,6 @@ export const SidebarNavigation = ({ collapsed, user }: SidebarNavigationProps) =
       key: "po",
     },
     {
-      icon: FileText,
-      label: "AMK/AKK",
-      path: "/amk-akk-management",
-      key: "amk-akk",
-    },
-    {
       icon: Activity,
       label: "LKS Status",
       path: "/lks-status",

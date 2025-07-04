@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import PageHeader from "@/components/ui/page-header";
 import WorkOrderDetail from './WorkOrderDetail';
 import AMKCreationForm from './forms/AMKCreationForm';
 import AKKCreationForm from './forms/AKKCreationForm';
@@ -261,33 +262,27 @@ const AMKAKKManagement = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">
-      {/* Purple Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-8 w-full">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">AMK/AKK Management</h1>
-            <p className="text-purple-100">Create and manage work instructions (Planned & Emergency)</p>
-          </div>
-          <div className="flex gap-3">
-            <Button 
-              onClick={handleCreatePlanned}
-              className="bg-white/20 hover:bg-white/30 text-white border-white/30 flex items-center gap-2"
-              variant="outline"
-            >
-              <Plus className="w-4 h-4" />
-              Create AMK (Planned)
-            </Button>
-            <Button 
-              onClick={handleCreateUnplanned}
-              className="bg-red-500/80 hover:bg-red-600/90 text-white border-red-300/30 flex items-center gap-2"
-              variant="outline"
-            >
-              <AlertTriangle className="w-4 h-4" />
-              Create AKK (Emergency)
-            </Button>
-          </div>
-        </div>
-      </div>
+      <PageHeader 
+        title="Work Management"
+        subtitle="Create and manage work instructions (Planned & Emergency)"
+      >
+        <Button 
+          onClick={handleCreatePlanned}
+          className="bg-white/20 hover:bg-white/30 text-white border-white/30 flex items-center gap-2"
+          variant="outline"
+        >
+          <Plus className="w-4 h-4" />
+          Create AMK (Planned)
+        </Button>
+        <Button 
+          onClick={handleCreateUnplanned}
+          className="bg-red-500/80 hover:bg-red-600/90 text-white border-red-300/30 flex items-center gap-2"
+          variant="outline"
+        >
+          <AlertTriangle className="w-4 h-4" />
+          Create AKK (Emergency)
+        </Button>
+      </PageHeader>
 
       <div className="w-full px-6 py-8 space-y-8">
         {/* Summary Cards */}
