@@ -58,7 +58,7 @@ export const ProtectedRoutes: RouteConfig[] = [
   // Work Management Module
   {
     path: "/work-management",
-    element: WorkManagement,
+    element: AMKAKKManagement,
     title: "Work Management",
     module: "Work Management",
   },
@@ -67,14 +67,6 @@ export const ProtectedRoutes: RouteConfig[] = [
     element: WorkOrderDetailWrapper,
     title: "Work Order Detail",
     module: "Work Management",
-  },
-
-  // AMK/AKK Management Module
-  {
-    path: "/amk-akk-management",
-    element: AMKAKKManagement,
-    title: "AMK/AKK Management",
-    module: "AMK/AKK Management",
   },
   {
     path: "/amk-form",

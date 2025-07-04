@@ -1,4 +1,4 @@
-
+// THIS PAGE NOT USED
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,7 +62,7 @@ const contractors = [
   { id: 'CONT-005', name: 'Emergency Power Solutions Ltd' }
 ];
 
-const AMKCreationForm = () => {
+const AMKCreationForm = ({ onBack }: { onBack?: () => void }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -190,12 +190,22 @@ const AMKCreationForm = () => {
         description: `${amkId} has been sent to ${formData.contractorName} for acknowledgement. Status: Pending Acknowledgement`,
       });
       
-      navigate('/amk-akk-management');
+      // Use onBack callback if provided, otherwise navigate
+      if (onBack) {
+        onBack();
+      } else {
+        navigate('/work-management');
+      }
     }
   };
 
   const handleCancel = () => {
-    navigate('/amk-akk-management');
+    // Use onBack callback if provided, otherwise navigate
+    if (onBack) {
+      onBack();
+    } else {
+      navigate('/work-management');
+    }
   };
 
   return (
