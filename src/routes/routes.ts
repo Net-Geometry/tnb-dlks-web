@@ -150,12 +150,12 @@ export const ProtectedRoutes: RouteConfig[] = [
   },
 
   // JIB Module
-  {
-    path: "/jib",
-    element: JIBModule,
-    title: "JIB",
-    module: "JIB",
-  },
+  // {
+  //   path: "/jib",
+  //   element: JIBModule,
+  //   title: "JIB",
+  //   module: "JIB",
+  // },
 
   // Administration Module
   {
