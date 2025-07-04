@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import PageHeader from "@/components/ui/page-header";
 import WorkOrderDetail from './WorkOrderDetail';
-import AMKCreationForm from './forms/AMKCreationForm';
-import AKKCreationForm from './forms/AKKCreationForm';
 import { 
   Plus, 
   FileText, 
@@ -23,8 +21,6 @@ import {
   Building,
   XCircle
 } from 'lucide-react';
-
-type ViewMode = 'list' | 'amk-form' | 'akk-form' | 'detail';
 
 // Valid status transitions for AMK and AKK
 const AMK_STATUSES = {
@@ -47,38 +43,26 @@ type AKKStatus = typeof AKK_STATUSES[keyof typeof AKK_STATUSES];
 
 const AMKAKKManagement = () => {
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedOrder, setSelectedOrder] = useState<{ id: string; type: 'AMK' | 'AKK' } | null>(null);
 
   const handleCreatePlanned = () => {
-    setViewMode('amk-form');
+    navigate('/amk-form');
   };
 
   const handleCreateUnplanned = () => {
-    setViewMode('akk-form');
+    navigate('/akk-form');
   };
 
   const handleViewDetails = (orderId: string, documentType: 'AMK' | 'AKK') => {
     setSelectedOrder({ id: orderId, type: documentType });
-    setViewMode('detail');
   };
 
   const handleBackToList = () => {
-    setViewMode('list');
     setSelectedOrder(null);
   };
 
-  // Show form views
-  if (viewMode === 'amk-form') {
-    return <AMKCreationForm />;
-  }
-
-  if (viewMode === 'akk-form') {
-    return <AKKCreationForm />;
-  }
-
   // Show detail view if an order is selected
-  if (viewMode === 'detail' && selectedOrder) {
+  if (selectedOrder) {
     return (
       <WorkOrderDetail 
         documentId={selectedOrder.id}

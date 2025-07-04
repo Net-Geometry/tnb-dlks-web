@@ -1,4 +1,4 @@
-
+//THIS PAGE NOT USED
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,7 +58,7 @@ const contractors = [
   { id: 'CONT-005', name: 'Grid Solutions Malaysia Sdn Bhd', address: 'No. 654, Jalan Tun Razak, 50400 Kuala Lumpur', phone: '+60 3-2718 3456' }
 ];
 
-const AKKCreationForm = () => {
+const AKKCreationForm = ({ onBack }: { onBack?: () => void }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -201,12 +201,22 @@ const AKKCreationForm = () => {
         description: `${akkId} has been sent to ${formData.contractorName} for immediate acknowledgement. Status: Pending Acknowledgement`,
       });
       
-      navigate('/amk-akk-management');
+      // Use onBack callback if provided, otherwise navigate
+      if (onBack) {
+        onBack();
+      } else {
+        navigate('/work-management');
+      }
     }
   };
 
   const handleCancel = () => {
-    navigate('/amk-akk-management');
+    // Use onBack callback if provided, otherwise navigate
+    if (onBack) {
+      onBack();
+    } else {
+      navigate('/work-management');
+    }
   };
 
   return (
