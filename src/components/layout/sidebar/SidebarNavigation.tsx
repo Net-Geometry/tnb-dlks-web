@@ -21,8 +21,18 @@ export const SidebarNavigation = ({ collapsed, user }: SidebarNavigationProps) =
   // State to manage which parent item is currently expanded (accordion behavior)
   const [expandedParent, setExpandedParent] = useState<string | null>(null);
 
+  // Debug: Log user object to see its structure
+  console.log("SidebarNavigation - Current user:", user);
+  console.log("SidebarNavigation - User metadata:", user?.user_metadata);
+  console.log("SidebarNavigation - User permissions:", user?.user_metadata?.permissions);
+
   const menuItems: MenuItem[] = [
-    { icon: Home, label: "Dashboard", path: "/dashboard", key: "dashboard" },
+    {
+      icon: Home,
+      label: "Dashboard",
+      path: "/dashboard",
+      key: "dashboard"
+    },
     {
       icon: Briefcase,
       label: "Work Management",
@@ -43,37 +53,42 @@ export const SidebarNavigation = ({ collapsed, user }: SidebarNavigationProps) =
     },
     {
       icon: Activity,
-      label: "LKS",
+      label: "LKS Status",
       path: "/lks-status",
       key: "lks",
     },
     // { icon: FileText, label: "JIB", path: "/jib", key: "jib" },
-    {
-      icon: Users,
-      label: "Administration",
-      path: "/user-management",
-      key: "admin",
-      subItems: [
-        { icon: Users, label: "User Management", path: "/user-management", key: "user-management" },
-        { icon: Settings, label: "Settings", path: "/settings", key: "settings" },
-      ]
-    },
+    // {
+    //   icon: Users,
+    //   label: "Administration",
+    //   path: "/user-management",
+    //   key: "admin",
+    //   subItems: [
+    //     { icon: Users, label: "User Management", path: "/user-management", key: "user-management" },
+    //     { icon: Settings, label: "Settings", path: "/settings", key: "settings" },
+    //   ]
+    // },
+    { icon: Users, label: "User Management", path: "/user-management", key: "user-management" },
+    { icon: Settings, label: "Settings", path: "/settings", key: "settings" },
   ];
 
   // Filter menu items based on user permissions
   const getFilteredMenuItems = () => {
     if (user?.user_metadata?.role === "TNB Super Admin") return menuItems;
 
+    // Temporarily disable admin filtering for testing - REMOVE THIS LATER
+    return menuItems;
+
     // Filter based on user level and permissions
-    return menuItems.filter((item) => {
-      if (
-        item.key === "admin" &&
-        !user?.user_metadata?.permissions?.includes("manage_users")
-      ) {
-        return false;
-      }
-      return true;
-    });
+    // return menuItems.filter((item) => {
+    //   if (
+    //     item.key === "admin" &&
+    //     !user?.user_metadata?.permissions?.includes("manage_users")
+    //   ) {
+    //     return false;
+    //   }
+    //   return true;
+    // });
   };
 
   // Handle accordion behavior - only one parent can be expanded at a time
