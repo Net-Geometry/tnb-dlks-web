@@ -10,6 +10,8 @@ import {
   Activity,
   Users,
   Settings,
+  Building,
+  History,
 } from "lucide-react";
 
 interface SidebarNavigationProps {
@@ -17,21 +19,27 @@ interface SidebarNavigationProps {
   user: User | null;
 }
 
-export const SidebarNavigation = ({ collapsed, user }: SidebarNavigationProps) => {
+export const SidebarNavigation = ({
+  collapsed,
+  user,
+}: SidebarNavigationProps) => {
   // State to manage which parent item is currently expanded (accordion behavior)
   const [expandedParent, setExpandedParent] = useState<string | null>(null);
 
   // Debug: Log user object to see its structure
   console.log("SidebarNavigation - Current user:", user);
   console.log("SidebarNavigation - User metadata:", user?.user_metadata);
-  console.log("SidebarNavigation - User permissions:", user?.user_metadata?.permissions);
+  console.log(
+    "SidebarNavigation - User permissions:",
+    user?.user_metadata?.permissions
+  );
 
   const menuItems: MenuItem[] = [
     {
       icon: Home,
       label: "Dashboard",
       path: "/dashboard",
-      key: "dashboard"
+      key: "dashboard",
     },
     {
       icon: Briefcase,
@@ -51,19 +59,38 @@ export const SidebarNavigation = ({ collapsed, user }: SidebarNavigationProps) =
       path: "/lks-status",
       key: "lks",
     },
-    // { icon: FileText, label: "JIB", path: "/jib", key: "jib" },
-    // {
-    //   icon: Users,
-    //   label: "Administration",
-    //   path: "/user-management",
-    //   key: "admin",
-    //   subItems: [
-    //     { icon: Users, label: "User Management", path: "/user-management", key: "user-management" },
-    //     { icon: Settings, label: "Settings", path: "/settings", key: "settings" },
-    //   ]
-    // },
-    { icon: Users, label: "User Management", path: "/user-management", key: "user-management" },
-    { icon: Settings, label: "Settings", path: "/settings", key: "settings" },
+    {
+      icon: Users,
+      label: "Administration",
+      path: "/administration",
+      key: "admin",
+      subItems: [
+        {
+          icon: Users,
+          label: "User Management",
+          path: "/user-management",
+          key: "user-management",
+        },
+        {
+          icon: Building,
+          label: "Organization Management",
+          path: "/organization-management",
+          key: "organization-management",
+        },
+        {
+          icon: History,
+          label: "Activity Log",
+          path: "/activity-log",
+          key: "activity-log",
+        },
+        {
+          icon: Settings,
+          label: "Settings",
+          path: "/settings",
+          key: "settings",
+        },
+      ],
+    },
   ];
 
   // Filter menu items based on user permissions
@@ -97,7 +124,11 @@ export const SidebarNavigation = ({ collapsed, user }: SidebarNavigationProps) =
   };
 
   return (
-    <nav className={`flex-1 transition-all duration-300 ${collapsed ? 'p-2' : 'p-4'}`}>
+    <nav
+      className={`flex-1 transition-all duration-300 ${
+        collapsed ? "p-2" : "p-4"
+      }`}
+    >
       <ul className="space-y-2">
         {getFilteredMenuItems().map((item) => (
           <li key={item.key}>

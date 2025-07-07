@@ -437,39 +437,112 @@ export type Database = {
       }
       dlks_organization: {
         Row: {
+          contact_email: string | null
+          contact_phone: string | null
           created_at: string | null
           created_by: string | null
           description: string | null
           id: string
+          is_active: boolean | null
+          is_deleted: boolean | null
+          location: string | null
           logo_file_path: string | null
           name: string | null
           type: string | null
+          updated_at: string | null
+          updated_by: string | null
+          website: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_deleted?: boolean | null
+          location?: string | null
+          logo_file_path?: string | null
+          name?: string | null
+          type?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          website?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_deleted?: boolean | null
+          location?: string | null
+          logo_file_path?: string | null
+          name?: string | null
+          type?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      dlks_organization_role_group: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          group_id: number | null
+          id: number
+          organization_id: string | null
+          role_id: number | null
           updated_at: string | null
           updated_by: string | null
         }
         Insert: {
           created_at?: string | null
           created_by?: string | null
-          description?: string | null
-          id?: string
-          logo_file_path?: string | null
-          name?: string | null
-          type?: string | null
+          group_id?: number | null
+          id?: number
+          organization_id?: string | null
+          role_id?: number | null
           updated_at?: string | null
           updated_by?: string | null
         }
         Update: {
           created_at?: string | null
           created_by?: string | null
-          description?: string | null
-          id?: string
-          logo_file_path?: string | null
-          name?: string | null
-          type?: string | null
+          group_id?: number | null
+          id?: number
+          organization_id?: string | null
+          role_id?: number | null
           updated_at?: string | null
           updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dlks_organization_role_group_dlks_organization_fk"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "dlks_organization"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dlks_organization_role_group_dlks_user_group_fk"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "dlks_user_group"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dlks_organization_role_group_dlks_user_role_fk"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "dlks_user_role"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dlks_pre_work_checklist: {
         Row: {
@@ -504,7 +577,10 @@ export type Database = {
           created_by: string | null
           email: string | null
           id: string
+          is_active: boolean
+          is_deleted: boolean
           name: string | null
+          organization_id: string | null
           phone_number: string | null
           updated_at: string | null
           updated_by: string | null
@@ -515,7 +591,10 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          is_active?: boolean
+          is_deleted?: boolean
           name?: string | null
+          organization_id?: string | null
           phone_number?: string | null
           updated_at?: string | null
           updated_by?: string | null
@@ -526,13 +605,23 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          is_active?: boolean
+          is_deleted?: boolean
           name?: string | null
+          organization_id?: string | null
           phone_number?: string | null
           updated_at?: string | null
           updated_by?: string | null
           user_role?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "dlks_profile_dlks_organization_fk"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "dlks_organization"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "dlks_profile_dlks_user_role_fk"
             columns: ["user_role"]
@@ -582,51 +671,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "dlks_profile_address_dlks_profile_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "dlks_profile"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      dlks_profile_organization: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          id: string
-          organization_id: string | null
-          profile_id: string | null
-          updated_at: string | null
-          updated_by: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          organization_id?: string | null
-          profile_id?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          organization_id?: string | null
-          profile_id?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "dlks_profile_organization_dlks_organization_fk"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "dlks_organization"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "dlks_profile_organization_dlks_profile_fk"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "dlks_profile"
@@ -693,6 +737,7 @@ export type Database = {
           created_by: string | null
           description: string | null
           id: string
+          item_type: string | null
           line_no: number | null
           line_status: string | null
           lkh_created: boolean | null
@@ -714,6 +759,7 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           id?: string
+          item_type?: string | null
           line_no?: number | null
           line_status?: string | null
           lkh_created?: boolean | null
@@ -735,6 +781,7 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           id?: string
+          item_type?: string | null
           line_no?: number | null
           line_status?: string | null
           lkh_created?: boolean | null
@@ -842,6 +889,7 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           id: number
+          name: string | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -849,6 +897,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           id?: number
+          name?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -856,10 +905,58 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           id?: number
+          name?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
         Relationships: []
+      }
+      dlks_user_activity_log: {
+        Row: {
+          activity_description: string
+          activity_type: string
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          ip_address: unknown | null
+          profile_id: string
+          session_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          activity_description: string
+          activity_type: string
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          profile_id: string
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          activity_description?: string
+          activity_type?: string
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          profile_id?: string
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_activity_log_profile"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "dlks_profile"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dlks_user_group: {
         Row: {
@@ -867,6 +964,7 @@ export type Database = {
           created_by: string | null
           id: number
           name: string | null
+          organization_id: string | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -875,6 +973,7 @@ export type Database = {
           created_by?: string | null
           id?: number
           name?: string | null
+          organization_id?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -883,66 +982,74 @@ export type Database = {
           created_by?: string | null
           id?: number
           name?: string | null
+          organization_id?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dlks_user_group_dlks_organization_fk"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "dlks_organization"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dlks_user_role: {
         Row: {
           created_at: string | null
           created_by: string | null
           id: number
+          is_active: boolean
+          is_deleted: boolean | null
           name: string | null
           updated_at: string | null
           updated_by: string | null
-          user_group_id: number | null
         }
         Insert: {
           created_at?: string | null
           created_by?: string | null
           id?: number
+          is_active?: boolean
+          is_deleted?: boolean | null
           name?: string | null
           updated_at?: string | null
           updated_by?: string | null
-          user_group_id?: number | null
         }
         Update: {
           created_at?: string | null
           created_by?: string | null
           id?: number
+          is_active?: boolean
+          is_deleted?: boolean | null
           name?: string | null
           updated_at?: string | null
           updated_by?: string | null
-          user_group_id?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "dlks_user_role_dlks_user_group_fk"
-            columns: ["user_group_id"]
-            isOneToOne: false
-            referencedRelation: "dlks_user_group"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       dlks_work_management: {
         Row: {
+          actual_end_date: string | null
+          actual_start_date: string | null
           akk_number: string | null
-          complaint_number: string | null
+          contractor_acknowledgement: boolean | null
           contractor_id: string | null
+          contractor_justification: string | null
           created_at: string | null
           created_by: string | null
-          estimated_completion_date: string | null
           id: string
           issued_date: string | null
           multiple_lks: boolean | null
           pre_work_checklist_id: number | null
           project_number: string | null
-          proposed_date: string | null
+          proposed_end_date: string | null
+          proposed_start_date: string | null
           remark: string | null
-          start_date: string | null
+          revision_count: number | null
           status_id: number | null
+          ticket_number: string | null
           updated_at: string | null
           updated_by: string | null
           word_code: string | null
@@ -951,21 +1058,25 @@ export type Database = {
           work_type: number | null
         }
         Insert: {
+          actual_end_date?: string | null
+          actual_start_date?: string | null
           akk_number?: string | null
-          complaint_number?: string | null
+          contractor_acknowledgement?: boolean | null
           contractor_id?: string | null
+          contractor_justification?: string | null
           created_at?: string | null
           created_by?: string | null
-          estimated_completion_date?: string | null
           id?: string
           issued_date?: string | null
           multiple_lks?: boolean | null
           pre_work_checklist_id?: number | null
           project_number?: string | null
-          proposed_date?: string | null
+          proposed_end_date?: string | null
+          proposed_start_date?: string | null
           remark?: string | null
-          start_date?: string | null
+          revision_count?: number | null
           status_id?: number | null
+          ticket_number?: string | null
           updated_at?: string | null
           updated_by?: string | null
           word_code?: string | null
@@ -974,21 +1085,25 @@ export type Database = {
           work_type?: number | null
         }
         Update: {
+          actual_end_date?: string | null
+          actual_start_date?: string | null
           akk_number?: string | null
-          complaint_number?: string | null
+          contractor_acknowledgement?: boolean | null
           contractor_id?: string | null
+          contractor_justification?: string | null
           created_at?: string | null
           created_by?: string | null
-          estimated_completion_date?: string | null
           id?: string
           issued_date?: string | null
           multiple_lks?: boolean | null
           pre_work_checklist_id?: number | null
           project_number?: string | null
-          proposed_date?: string | null
+          proposed_end_date?: string | null
+          proposed_start_date?: string | null
           remark?: string | null
-          start_date?: string | null
+          revision_count?: number | null
           status_id?: number | null
+          ticket_number?: string | null
           updated_at?: string | null
           updated_by?: string | null
           word_code?: string | null
@@ -1020,30 +1135,120 @@ export type Database = {
           },
         ]
       }
-      "test-table": {
+      dlks_workflow_instances: {
         Row: {
-          created_at: string
-          desc: string | null
+          created_at: string | null
+          created_by: string | null
+          current_step_id: number | null
+          entity_id: string | null
+          entity_name: string | null
           id: number
-          name: string | null
+          status_id: number | null
+          updated_at: string | null
+          updated_by: string | null
+          workflow_id: number | null
         }
         Insert: {
-          created_at?: string
-          desc?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          current_step_id?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
           id?: number
-          name?: string | null
+          status_id?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          workflow_id?: number | null
         }
         Update: {
-          created_at?: string
-          desc?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          current_step_id?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          id?: number
+          status_id?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          workflow_id?: number | null
+        }
+        Relationships: []
+      }
+      dlks_workflows: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: number
+          name: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
           id?: number
           name?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: number
+          name?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      dlks_workflows_steps: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: number
+          name: string | null
+          role_id: number | null
+          step_order: number | null
+          updated_at: string | null
+          updated_by: string | null
+          workflow_id: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: number
+          name?: string | null
+          role_id?: number | null
+          step_order?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          workflow_id?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: number
+          name?: string | null
+          role_id?: number | null
+          step_order?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          workflow_id?: number | null
         }
         Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      user_management_setup_check: {
+        Row: {
+          count: number | null
+          entity_type: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

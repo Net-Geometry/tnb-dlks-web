@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import type { ReactNode } from "react";
 import { supabase } from "@/integration/supabase/client";
+import { ActivityLogService } from "@/services/activityLogService";
 import type { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextType {
@@ -58,6 +59,20 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         console.error("Error signing in:", error.message);
         return { success: false, error: error.message };
       }
+
+      // Log successful login
+      if (data.user) {
+        try {
+          await ActivityLogService.logUserLogin(
+            data.user.id,
+            window.location.hostname,
+            navigator.userAgent
+          );
+        } catch (logError) {
+          console.warn("Failed to log user login:", logError);
+        }
+      }
+
       console.log("Sign in successful:", data);
       return { success: true, data };
     } catch (error) {
@@ -87,11 +102,26 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsAuthenticated(!!session);
       setIsLoading(false);
+
+      // Log session events
+      if (event === "SIGNED_IN" && session?.user) {
+        try {
+          await ActivityLogService.logUserLogin(
+            session.user.id,
+            window.location.hostname,
+            navigator.userAgent
+          );
+        } catch (logError) {
+          console.warn("Failed to log session login:", logError);
+        }
+      } else if (event === "SIGNED_OUT") {
+        // Logout logging is handled in signOut function
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -99,10 +129,25 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   //Sign out
   const signOut = async () => {
+    const currentUser = user;
+
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error("Error signing out:", error.message);
     } else {
+      // Log logout before clearing session
+      if (currentUser) {
+        try {
+          await ActivityLogService.logUserLogout(
+            currentUser.id,
+            window.location.hostname,
+            navigator.userAgent
+          );
+        } catch (logError) {
+          console.warn("Failed to log user logout:", logError);
+        }
+      }
+
       setSession(null);
       setUser(null);
       setIsAuthenticated(false);

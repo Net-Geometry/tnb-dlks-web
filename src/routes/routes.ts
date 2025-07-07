@@ -33,6 +33,12 @@ const JIBModule = lazy(() => import("@/components/modules/JIBModule"));
 const UserManagement = lazy(
   () => import("@/components/modules/UserManagement")
 );
+const OrganizationManagement = lazy(
+  () => import("@/components/modules/OrganizationManagement")
+);
+const UserActivityLog = lazy(
+  () => import("@/components/modules/UserActivityLog")
+);
 const Settings = lazy(() => import("@/components/modules/Settings"));
 const WorkOrderDetailWrapper = lazy(
   () => import("@/components/modules/WorkOrderDetailWrapper")
@@ -154,6 +160,18 @@ export const ProtectedRoutes: RouteConfig[] = [
     path: "/user-management",
     element: UserManagement,
     title: "User Management",
+    module: "Administration",
+  },
+  {
+    path: "/organization-management",
+    element: OrganizationManagement,
+    title: "Organization Management",
+    module: "Administration",
+  },
+  {
+    path: "/activity-log",
+    element: UserActivityLog,
+    title: "Activity Log",
     module: "Administration",
   },
   {
