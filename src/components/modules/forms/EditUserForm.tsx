@@ -70,7 +70,7 @@ const editUserSchema = z.object({
     .optional()
     .refine((val) => !val || val.length <= 50, "Employee ID is too long"),
   department: z.string().optional(),
-  company: z.string().optional(), // This will be mapped to organization
+  //   company: z.string().optional(), // This will be mapped to organization
   position: z.string().optional(),
   role_id: z
     .string()
@@ -154,7 +154,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
           phone: user.phone_number || "",
           employee_id: "", // This comes from auth metadata
           department: "", // This comes from auth metadata
-          company: "", // This comes from auth metadata
+          //   company: "", // This comes from auth metadata
           position: "", // This comes from auth metadata
           role_id: user.user_role || "",
           organization_id: user.organization_id || "",

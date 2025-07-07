@@ -78,7 +78,7 @@ const addUserSchema = z
       .optional()
       .refine((val) => !val || val.length <= 50, "Employee ID is too long"),
     department: z.string().optional(),
-    company: z.string().optional(), // This will be mapped to organization
+    // company: z.string().optional(), // This will be mapped to organization
     position: z.string().optional(),
     role_id: z
       .string()
@@ -112,7 +112,7 @@ const addUserSchema = z
       .min(5, "Postal code is required")
       .max(10, "Postal code is too long")
       .regex(/^\d{5}$/, "Malaysian postal code must be 5 digits"),
-    
+
     // Optional fields that are in the form but not required
     country: z.string().optional(),
     address_type: z.string().optional(),
@@ -147,10 +147,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
           UserManagementService.getOrganizations(),
           UserManagementService.getUserGroups(),
         ]);
-        
+
         console.log("Loaded roles:", rolesData);
         console.log("Loaded organizations:", orgsData);
-        
+
         setRoles(rolesData);
         setOrganizations(orgsData);
         setUserGroups(groupsData);
@@ -184,7 +184,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
       // Debug: Log the form data to see what we're getting
       console.log("Form data before submission:", data);
       console.log("Role ID:", data.role_id, "Type:", typeof data.role_id);
-      
+
       const response = await UserManagementService.createUser(
         data as CreateUserFormData
       );
@@ -457,7 +457,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
               )}
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="company">Company</Label>
               <Input
                 id="company"
@@ -468,7 +468,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
               {errors.company && (
                 <p className="text-sm text-red-500">{errors.company.message}</p>
               )}
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>
