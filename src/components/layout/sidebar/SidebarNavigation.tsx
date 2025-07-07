@@ -62,7 +62,7 @@ export const SidebarNavigation = ({
     {
       icon: Users,
       label: "Administration",
-      path: "/administration",
+      path: "/user-management",
       key: "admin",
       subItems: [
         {
