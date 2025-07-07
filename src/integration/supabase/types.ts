@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instanciate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   public: {
     Tables: {
       dlks_doc_type: {
@@ -494,9 +499,9 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           group_id: number | null
-          id: number
+          id: string
           organization_id: string | null
-          role_id: number | null
+          role_id: string | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -504,9 +509,9 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           group_id?: number | null
-          id?: number
+          id?: string
           organization_id?: string | null
-          role_id?: number | null
+          role_id?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -514,9 +519,9 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           group_id?: number | null
-          id?: number
+          id?: string
           organization_id?: string | null
-          role_id?: number | null
+          role_id?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -533,14 +538,7 @@ export type Database = {
             columns: ["group_id"]
             isOneToOne: false
             referencedRelation: "dlks_user_group"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "dlks_organization_role_group_dlks_user_role_fk"
-            columns: ["role_id"]
-            isOneToOne: false
-            referencedRelation: "dlks_user_role"
-            referencedColumns: ["id"]
+            referencedColumns: ["id2"]
           },
         ]
       }
@@ -583,8 +581,8 @@ export type Database = {
           organization_id: string | null
           phone_number: string | null
           updated_at: string | null
-          updated_by: string | null
-          user_role: number | null
+          updated_by: string
+          user_role: string | null
         }
         Insert: {
           created_at?: string | null
@@ -597,8 +595,8 @@ export type Database = {
           organization_id?: string | null
           phone_number?: string | null
           updated_at?: string | null
-          updated_by?: string | null
-          user_role?: number | null
+          updated_by: string
+          user_role?: string | null
         }
         Update: {
           created_at?: string | null
@@ -611,8 +609,8 @@ export type Database = {
           organization_id?: string | null
           phone_number?: string | null
           updated_at?: string | null
-          updated_by?: string | null
-          user_role?: number | null
+          updated_by?: string
+          user_role?: string | null
         }
         Relationships: [
           {
@@ -623,7 +621,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "dlks_profile_dlks_user_role_fk"
+            foreignKeyName: "dlks_profile_user_role_fkey"
             columns: ["user_role"]
             isOneToOne: false
             referencedRelation: "dlks_user_role"
@@ -869,13 +867,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "dlks_supervisor_assign_dlks_profile_fk"
-            columns: ["supervisor_id"]
-            isOneToOne: false
-            referencedRelation: "dlks_profile"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "dlks_supervisor_assign_dlks_work_management_fk"
             columns: ["work_management_id"]
             isOneToOne: false
@@ -950,7 +941,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_activity_log_profile"
+            foreignKeyName: "dlks_user_activity_log_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "dlks_profile"
@@ -962,7 +953,8 @@ export type Database = {
         Row: {
           created_at: string | null
           created_by: string | null
-          id: number
+          id: string | null
+          id2: number
           name: string | null
           organization_id: string | null
           updated_at: string | null
@@ -971,7 +963,8 @@ export type Database = {
         Insert: {
           created_at?: string | null
           created_by?: string | null
-          id?: number
+          id?: string | null
+          id2?: number
           name?: string | null
           organization_id?: string | null
           updated_at?: string | null
@@ -980,7 +973,8 @@ export type Database = {
         Update: {
           created_at?: string | null
           created_by?: string | null
-          id?: number
+          id?: string | null
+          id2?: number
           name?: string | null
           organization_id?: string | null
           updated_at?: string | null
@@ -1000,7 +994,8 @@ export type Database = {
         Row: {
           created_at: string | null
           created_by: string | null
-          id: number
+          id: string
+          id2: number
           is_active: boolean
           is_deleted: boolean | null
           name: string | null
@@ -1010,7 +1005,8 @@ export type Database = {
         Insert: {
           created_at?: string | null
           created_by?: string | null
-          id?: number
+          id?: string
+          id2?: number
           is_active?: boolean
           is_deleted?: boolean | null
           name?: string | null
@@ -1020,7 +1016,8 @@ export type Database = {
         Update: {
           created_at?: string | null
           created_by?: string | null
-          id?: number
+          id?: string
+          id2?: number
           is_active?: boolean
           is_deleted?: boolean | null
           name?: string | null
@@ -1135,111 +1132,6 @@ export type Database = {
           },
         ]
       }
-      dlks_workflow_instances: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          current_step_id: number | null
-          entity_id: string | null
-          entity_name: string | null
-          id: number
-          status_id: number | null
-          updated_at: string | null
-          updated_by: string | null
-          workflow_id: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          current_step_id?: number | null
-          entity_id?: string | null
-          entity_name?: string | null
-          id?: number
-          status_id?: number | null
-          updated_at?: string | null
-          updated_by?: string | null
-          workflow_id?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          current_step_id?: number | null
-          entity_id?: string | null
-          entity_name?: string | null
-          id?: number
-          status_id?: number | null
-          updated_at?: string | null
-          updated_by?: string | null
-          workflow_id?: number | null
-        }
-        Relationships: []
-      }
-      dlks_workflows: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: number
-          name: string | null
-          updated_at: string | null
-          updated_by: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: number
-          name?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: number
-          name?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Relationships: []
-      }
-      dlks_workflows_steps: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          id: number
-          name: string | null
-          role_id: number | null
-          step_order: number | null
-          updated_at: string | null
-          updated_by: string | null
-          workflow_id: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          id?: number
-          name?: string | null
-          role_id?: number | null
-          step_order?: number | null
-          updated_at?: string | null
-          updated_by?: string | null
-          workflow_id?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          id?: number
-          name?: string | null
-          role_id?: number | null
-          step_order?: number | null
-          updated_at?: string | null
-          updated_by?: string | null
-          workflow_id?: number | null
-        }
-        Relationships: []
-      }
     }
     Views: {
       user_management_setup_check: {
@@ -1262,21 +1154,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -1294,14 +1190,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -1317,14 +1215,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -1340,14 +1240,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -1355,14 +1257,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

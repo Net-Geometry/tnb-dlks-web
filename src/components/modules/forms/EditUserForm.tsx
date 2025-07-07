@@ -73,8 +73,9 @@ const editUserSchema = z.object({
   company: z.string().optional(), // This will be mapped to organization
   position: z.string().optional(),
   role_id: z
-    .number({ required_error: "Role is required" })
-    .min(1, "Please select a role"),
+    .string()
+    .min(1, "Please select a role")
+    .uuid("Invalid role selection"),
   organization_id: z.string().optional(),
 
   // Address
@@ -155,7 +156,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
           department: "", // This comes from auth metadata
           company: "", // This comes from auth metadata
           position: "", // This comes from auth metadata
-          role_id: user.user_role || 0,
+          role_id: user.user_role || "",
           organization_id: user.organization_id || "",
           address_line_1: userAddress?.address?.split(",")[0] || "",
           address_line_2: userAddress?.address?.split(",")[1]?.trim() || "",
@@ -319,8 +320,8 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
                 control={control}
                 render={({ field }) => (
                   <Select
-                    onValueChange={(value) => field.onChange(parseInt(value))}
-                    value={field.value?.toString()}
+                    onValueChange={(value) => field.onChange(value)}
+                    value={field.value || ""}
                   >
                     <SelectTrigger
                       className={errors.role_id ? "border-red-500" : ""}
@@ -329,7 +330,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
                     </SelectTrigger>
                     <SelectContent>
                       {roles.map((role) => (
-                        <SelectItem key={role.id} value={role.id.toString()}>
+                        <SelectItem key={role.id} value={role.id}>
                           {role.name}
                         </SelectItem>
                       ))}

@@ -1,7 +1,7 @@
 // Database Types for DLKS User Management System
 
 export interface DlksUserRole {
-  id: number;
+  id: string; // Changed from number to string (UUID)
   name: string;
   created_by?: string;
   created_at: string;
@@ -29,7 +29,7 @@ export interface Profile {
   created_at: string;
   updated_by?: string;
   updated_at: string;
-  user_role: number;
+  user_role: string; // Changed from number to string (UUID reference)
   organization_id?: string;
   is_active?: boolean; // User activation status
   deactivated_at?: string; // When user was deactivated
@@ -99,7 +99,7 @@ export interface CreateUserFormData {
   department?: string;
   company?: string;
   position?: string;
-  role_id: number;
+  role_id: string; // Changed from number to string (UUID)
   organization_id?: string;
 
   // Address data
@@ -108,12 +108,14 @@ export interface CreateUserFormData {
   city: string;
   state: string;
   postal_code: string;
+  country?: string;
+  address_type?: string;
 }
 
 export interface UpdateUserFormData {
   full_name: string;
   phone?: string;
-  role_id: number;
+  role_id: string; // Changed from number to string (UUID)
   organization_id?: string;
 }
 

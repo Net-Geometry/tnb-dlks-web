@@ -81,8 +81,9 @@ const addUserSchema = z
     company: z.string().optional(), // This will be mapped to organization
     position: z.string().optional(),
     role_id: z
-      .number({ required_error: "Role is required" })
-      .min(1, "Please select a role"),
+      .string()
+      .min(1, "Please select a role")
+      .uuid("Invalid role selection"),
     organization_id: z.string().optional(),
 
     // Address - Enhanced validation
@@ -111,6 +112,10 @@ const addUserSchema = z
       .min(5, "Postal code is required")
       .max(10, "Postal code is too long")
       .regex(/^\d{5}$/, "Malaysian postal code must be 5 digits"),
+    
+    // Optional fields that are in the form but not required
+    country: z.string().optional(),
+    address_type: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -142,10 +147,15 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
           UserManagementService.getOrganizations(),
           UserManagementService.getUserGroups(),
         ]);
+        
+        console.log("Loaded roles:", rolesData);
+        console.log("Loaded organizations:", orgsData);
+        
         setRoles(rolesData);
         setOrganizations(orgsData);
         setUserGroups(groupsData);
       } catch (err) {
+        console.error("Failed to load form data:", err);
         setError("Failed to load form data");
       }
     };
@@ -162,6 +172,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       organization_id: "",
+      role_id: "", // Empty string instead of undefined
     },
   });
 
@@ -170,6 +181,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
     setError(null);
 
     try {
+      // Debug: Log the form data to see what we're getting
+      console.log("Form data before submission:", data);
+      console.log("Role ID:", data.role_id, "Type:", typeof data.role_id);
+      
       const response = await UserManagementService.createUser(
         data as CreateUserFormData
       );
@@ -229,7 +244,11 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
                 control={control}
                 render={({ field }) => (
                   <Select
-                    onValueChange={(value) => field.onChange(parseInt(value))}
+                    onValueChange={(value) => {
+                      console.log("Role selected:", value);
+                      field.onChange(value); // Pass string value directly
+                    }}
+                    value={field.value || ""}
                   >
                     <SelectTrigger
                       className={errors.role_id ? "border-red-500" : ""}
@@ -238,7 +257,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess, onCancel }) => {
                     </SelectTrigger>
                     <SelectContent>
                       {roles.map((role) => (
-                        <SelectItem key={role.id} value={role.id.toString()}>
+                        <SelectItem key={role.id} value={role.id}>
                           {role.name}
                         </SelectItem>
                       ))}

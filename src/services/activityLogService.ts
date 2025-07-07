@@ -5,6 +5,29 @@ import type {
   ActivityLogResponse,
 } from "@/types/database";
 
+// Utility function to get a proper IP address format
+function getClientIP(): string {
+  // For development, return localhost IP instead of hostname
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "127.0.0.1";
+    }
+    if (hostname.startsWith("192.168.")) {
+      return hostname;
+    }
+    if (hostname.startsWith("10.")) {
+      return hostname;
+    }
+    if (hostname.startsWith("172.")) {
+      return hostname;
+    }
+    // For other hostnames, return a default local IP
+    return "127.0.0.1";
+  }
+  return "127.0.0.1";
+}
+
 export class ActivityLogService {
   // Create activity log entry
   static async createActivityLog(
@@ -43,15 +66,18 @@ export class ActivityLogService {
     endDate?: string
   ): Promise<ActivityLogResponse> {
     try {
-      console.log("ActivityLogService: Starting getUserActivityLogs with params:", {
-        page,
-        limit,
-        userId,
-        activityType,
-        entityType,
-        startDate,
-        endDate,
-      });
+      console.log(
+        "ActivityLogService: Starting getUserActivityLogs with params:",
+        {
+          page,
+          limit,
+          userId,
+          activityType,
+          entityType,
+          startDate,
+          endDate,
+        }
+      );
 
       let query = supabase
         .from("dlks_user_activity_log")
@@ -83,7 +109,10 @@ export class ActivityLogService {
       const from = (page - 1) * limit;
       const to = from + limit - 1;
 
-      console.log("ActivityLogService: Executing query with pagination:", { from, to });
+      console.log("ActivityLogService: Executing query with pagination:", {
+        from,
+        to,
+      });
 
       const { data, error, count } = await query.range(from, to);
 
@@ -91,7 +120,7 @@ export class ActivityLogService {
 
       if (error) {
         console.error("ActivityLogService: Database error:", error);
-        
+
         // Check if it's a table not found error
         if (
           error.message.includes(
@@ -129,7 +158,10 @@ export class ActivityLogService {
         throw error;
       }
 
-      console.log("ActivityLogService: Returning successful response with data count:", data?.length || 0);
+      console.log(
+        "ActivityLogService: Returning successful response with data count:",
+        data?.length || 0
+      );
 
       return {
         success: true,
@@ -236,7 +268,7 @@ export class ActivityLogService {
         activity_description: "User logged in",
         entity_type: "USER",
         entity_id: userId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
         session_id: sessionId,
       });
@@ -259,7 +291,7 @@ export class ActivityLogService {
         activity_description: "User logged out",
         entity_type: "USER",
         entity_id: userId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
         session_id: sessionId,
       });
@@ -283,7 +315,7 @@ export class ActivityLogService {
         activity_description: `Created user: ${newUserName}`,
         entity_type: "USER",
         entity_id: newUserId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -307,7 +339,7 @@ export class ActivityLogService {
         activity_description: `Updated user: ${targetUserName} - ${changes}`,
         entity_type: "USER",
         entity_id: targetUserId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -333,7 +365,7 @@ export class ActivityLogService {
         } user: ${targetUserName}`,
         entity_type: "USER",
         entity_id: targetUserId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -356,7 +388,7 @@ export class ActivityLogService {
         activity_description: `Created organization: ${organizationName}`,
         entity_type: "ORGANIZATION",
         entity_id: organizationId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -380,7 +412,7 @@ export class ActivityLogService {
         activity_description: `Updated organization: ${organizationName} - ${changes}`,
         entity_type: "ORGANIZATION",
         entity_id: organizationId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -403,7 +435,7 @@ export class ActivityLogService {
         activity_description: `Deleted organization: ${organizationName}`,
         entity_type: "ORGANIZATION",
         entity_id: organizationId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -428,7 +460,7 @@ export class ActivityLogService {
         activity_description: `Added ${memberName} to organization: ${organizationName}`,
         entity_type: "ORGANIZATION",
         entity_id: organizationId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -453,7 +485,7 @@ export class ActivityLogService {
         activity_description: `Removed ${memberName} from organization: ${organizationName}`,
         entity_type: "ORGANIZATION",
         entity_id: organizationId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
       });
     } catch (error) {
@@ -479,7 +511,7 @@ export class ActivityLogService {
         activity_description: description,
         entity_type: entityType,
         entity_id: entityId,
-        ip_address: ipAddress,
+        ip_address: ipAddress || getClientIP(),
         user_agent: userAgent,
         session_id: sessionId,
       });

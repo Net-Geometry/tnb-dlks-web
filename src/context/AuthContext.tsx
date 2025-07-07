@@ -65,7 +65,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         try {
           await ActivityLogService.logUserLogin(
             data.user.id,
-            window.location.hostname,
+            undefined, // Let the service determine the IP
             navigator.userAgent
           );
         } catch (logError) {
@@ -113,7 +113,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         try {
           await ActivityLogService.logUserLogin(
             session.user.id,
-            window.location.hostname,
+            undefined, // Let the service determine the IP
             navigator.userAgent
           );
         } catch (logError) {

@@ -152,7 +152,13 @@ const UserActivityLog = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, selectedActivityType, selectedEntityType, dateRange.startDate, dateRange.endDate]);
+  }, [
+    currentPage,
+    selectedActivityType,
+    selectedEntityType,
+    dateRange.startDate,
+    dateRange.endDate,
+  ]);
 
   const handleRefresh = () => {
     loadActivities();
