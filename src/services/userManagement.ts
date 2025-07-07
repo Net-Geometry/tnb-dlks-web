@@ -87,9 +87,9 @@ export class UserManagementService {
             full_name: userData.full_name,
             phone: userData.phone,
             employee_id: userData.employee_id,
-            department: userData.department,
-            company: userData.company,
-            position: userData.position,
+            // department: userData.department,
+            // company: userData.company,
+            // position: userData.position,
           },
         });
 

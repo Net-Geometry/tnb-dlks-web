@@ -77,12 +77,12 @@ export const SidebarNavigation = ({
           path: "/organization-management",
           key: "organization-management",
         },
-        {
-          icon: History,
-          label: "Activity Log",
-          path: "/activity-log",
-          key: "activity-log",
-        },
+        // {
+        //   icon: History,
+        //   label: "Activity Log",
+        //   path: "/activity-log",
+        //   key: "activity-log",
+        // },
         {
           icon: Settings,
           label: "Settings",

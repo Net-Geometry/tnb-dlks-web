@@ -168,12 +168,12 @@ export const ProtectedRoutes: RouteConfig[] = [
     title: "Organization Management",
     module: "Administration",
   },
-  {
-    path: "/activity-log",
-    element: UserActivityLog,
-    title: "Activity Log",
-    module: "Administration",
-  },
+  // {
+  //   path: "/activity-log",
+  //   element: UserActivityLog,
+  //   title: "Activity Log",
+  //   module: "Administration",
+  // },
   {
     path: "/settings",
     element: Settings,
