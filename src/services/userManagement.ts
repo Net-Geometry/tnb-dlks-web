@@ -439,6 +439,13 @@ export class UserManagementService {
             id,
             name,
             type
+          ),
+          dlks_user_role:user_role (
+            id,
+            name,
+            created_at,
+            updated_at,
+            is_active
           )
         `
         )
