@@ -27,12 +27,12 @@ export const SidebarNavigation = ({
   const [expandedParent, setExpandedParent] = useState<string | null>(null);
 
   // Debug: Log user object to see its structure
-  console.log("SidebarNavigation - Current user:", user);
-  console.log("SidebarNavigation - User metadata:", user?.user_metadata);
-  console.log(
-    "SidebarNavigation - User permissions:",
-    user?.user_metadata?.permissions
-  );
+  // console.log("SidebarNavigation - Current user:", user);
+  // console.log("SidebarNavigation - User metadata:", user?.user_metadata);
+  // console.log(
+  //   "SidebarNavigation - User permissions:",
+  //   user?.user_metadata?.permissions
+  // );
 
   const menuItems: MenuItem[] = [
     {
