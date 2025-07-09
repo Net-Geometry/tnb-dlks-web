@@ -1,6 +1,6 @@
 import { UserAuth } from "@/context/AuthContext";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,7 +34,7 @@ const LoginPage = () => {
     try {
       const response = await signInUser(email, password);
       if (response.success) {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       } else {
         setError(response.error || "An error occurred during sign in.");
       }

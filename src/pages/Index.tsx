@@ -7,14 +7,29 @@ import NotFound from "./NotFound";
 import { LoadingPage } from "@/components/ui/loading";
 import { ProtectedRoutes } from "@/routes/routes";
 import ProtectedRoute from "@/routes/ProtectedRoute";
+import PublicRoute from "@/routes/PublicRoute";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Routes>
-        {/* Public routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        {/* Public routes - redirect to dashboard if already authenticated */}
+        <Route 
+          path="/login" 
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/signup" 
+          element={
+            <PublicRoute>
+              <SignUpPage />
+            </PublicRoute>
+          } 
+        />
 
         {/* Protected dashboard routes */}
         {ProtectedRoutes.map((route) => (
