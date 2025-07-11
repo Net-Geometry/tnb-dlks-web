@@ -35,10 +35,10 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
         <div className="flex items-center gap-4">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-              {user?.email || "User"}
+              {user?.name || user?.email || "User"}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {user?.user_metadata?.role || "User"} • DLKS System
+              {user?.dlks_user_role?.name || "User"} • DLKS System
             </p>
           </div>
 

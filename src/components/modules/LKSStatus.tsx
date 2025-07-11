@@ -192,14 +192,14 @@ const LKSStatus = () => {
 
   const canCreateLKS = () => {
     return (
-      user?.user_metadata?.role === "KKB" ||
-      user?.user_metadata?.role === "TNB Super Admin"
+      user?.dlks_user_role?.name === "KKB" ||
+      user?.dlks_user_role?.name === "TNB Super Admin"
     );
   };
 
   const canViewAll = () => {
     return ["TNB Super Admin", "Senior Engineer", "Technician"].includes(
-      user?.user_metadata?.role || ""
+      user?.dlks_user_role?.name || ""
     );
   };
 
@@ -209,7 +209,7 @@ const LKSStatus = () => {
       submission.poNumber.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "All" || submission.status === statusFilter;
-    const matchesRole = canViewAll() || submission.contractor === user?.company;
+    const matchesRole = canViewAll() || submission.contractor === user?.dlks_organization?.name;
 
     return matchesSearch && matchesStatus && matchesRole;
   });
@@ -217,7 +217,7 @@ const LKSStatus = () => {
   const getSubmissionStats = () => {
     const userSubmissions = canViewAll()
       ? lksSubmissions
-      : lksSubmissions.filter((s) => s.contractor === user?.company);
+      : lksSubmissions.filter((s) => s.contractor === user?.dlks_organization?.name);
 
     return {
       total: userSubmissions.length,
@@ -523,8 +523,8 @@ const LKSStatus = () => {
                   </Button>
                   {(submission.status === "Draft" ||
                     submission.status === "Reupdate") &&
-                    (user?.user_metadata?.role === "KKB" ||
-                      user?.user_metadata?.company ===
+                    (user?.dlks_user_role?.name === "KKB" ||
+                      user?.dlks_organization?.name ===
                         submission.contractor) && (
                       <Button
                         size="sm"

@@ -35,6 +35,11 @@ export interface Profile {
   deactivated_at?: string; // When user was deactivated
   // Joined data
   dlks_user_role?: DlksUserRole;
+  dlks_organization?: {
+    id: string;
+    name: string;
+    type?: string;
+  };
   dlks_profile_address?: ProfileAddress[];
 }
 

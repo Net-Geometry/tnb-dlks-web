@@ -17,7 +17,7 @@ const WorkManagement = () => {
   } | null>(null);
 
   // If user is a Technician, show AMK/AKK Management instead
-  if (user?.user_metadata?.role === "Technician") {
+  if (user?.dlks_user_role?.name === "Technician") {
     return <AMKAKKManagement />;
   }
 

@@ -103,7 +103,7 @@ const LoginPage = () => {
               User Login
             </h2>
             <p className="text-muted-foreground">Access your DLKS account</p>
-            <p className="text-sm text-muted-foreground mt-2">
+            {/* <p className="text-sm text-muted-foreground mt-2">
               Don't have an account?{" "}
               <Link
                 to="/signup"
@@ -111,7 +111,7 @@ const LoginPage = () => {
               >
                 Sign Up!
               </Link>
-            </p>
+            </p> */}
           </div>
 
           <form onSubmit={handleLoginPage} className="space-y-6">

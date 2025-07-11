@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { User } from "@supabase/supabase-js";
+import { Profile } from "@/types/database";
 import { SidebarNavigationItem } from "./SidebarNavigationItem";
 import { MenuItem } from "./types";
 import {
@@ -16,7 +16,7 @@ import {
 
 interface SidebarNavigationProps {
   collapsed: boolean;
-  user: User | null;
+  user: Profile | null;
 }
 
 export const SidebarNavigation = ({
@@ -95,7 +95,7 @@ export const SidebarNavigation = ({
 
   // Filter menu items based on user permissions
   const getFilteredMenuItems = () => {
-    if (user?.user_metadata?.role === "TNB Super Admin") return menuItems;
+    if (user?.dlks_user_role?.name === "TNB Super Admin") return menuItems;
 
     // Temporarily disable admin filtering for testing - REMOVE THIS LATER
     return menuItems;
@@ -104,7 +104,7 @@ export const SidebarNavigation = ({
     // return menuItems.filter((item) => {
     //   if (
     //     item.key === "admin" &&
-    //     !user?.user_metadata?.permissions?.includes("manage_users")
+    //     !user?.dlks_user_role?.name?.includes("manage_users")
     //   ) {
     //     return false;
     //   }
