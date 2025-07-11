@@ -102,7 +102,7 @@ export const WorkOrderCard: React.FC<WorkOrderCardProps> = ({
   };
 
   const canAcknowledgeWork = () => {
-    return user?.user_metadata?.role === "Vendor" && !isOrderAcknowledged;
+    return user?.dlks_user_role?.name === "Vendor" && !isOrderAcknowledged;
   };
 
   const handleAcknowledgeWork = () => {

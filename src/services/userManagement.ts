@@ -14,38 +14,6 @@ export class UserManagementService {
   // Get all available roles
   static async getRoles(): Promise<DlksUserRole[]> {
     try {
-      // Return default roles if the table doesn't exist
-      const defaultRoles: DlksUserRole[] = [
-        {
-          id: "550e8400-e29b-41d4-a716-446655440001",
-          name: "Admin",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440002",
-          name: "IT",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440003",
-          name: "User",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440004",
-          name: "Manager",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ];
-
       const { data, error } = await supabase
         .from("dlks_user_role")
         .select("*")
@@ -53,51 +21,14 @@ export class UserManagementService {
         .order("name");
 
       if (error) {
-        // If table doesn't exist, return default roles
-        if (
-          error.message.includes(
-            'relation "public.dlks_user_role" does not exist'
-          )
-        ) {
-          console.warn("User role table doesn't exist, using default roles");
-          return defaultRoles;
-        }
+        console.error("Error fetching roles:", error);
         throw error;
       }
-      return data || defaultRoles;
+      
+      return data || [];
     } catch (error) {
       console.error("Error fetching roles:", error);
-      // Return default roles as fallback
-      return [
-        {
-          id: "550e8400-e29b-41d4-a716-446655440001",
-          name: "Admin",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440002",
-          name: "IT",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440003",
-          name: "User",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440004",
-          name: "Manager",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ];
+      return [];
     }
   }
 
@@ -156,9 +87,9 @@ export class UserManagementService {
             full_name: userData.full_name,
             phone: userData.phone,
             employee_id: userData.employee_id,
-            department: userData.department,
-            company: userData.company,
-            position: userData.position,
+            // department: userData.department,
+            // company: userData.company,
+            // position: userData.position,
           },
         });
 
@@ -508,6 +439,13 @@ export class UserManagementService {
             id,
             name,
             type
+          ),
+          dlks_user_role:user_role (
+            id,
+            name,
+            created_at,
+            updated_at,
+            is_active
           )
         `
         )

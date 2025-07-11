@@ -1,12 +1,12 @@
 import React from "react";
-import { User } from "@supabase/supabase-js";
+import { Profile } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
 
 interface SidebarUserProfileProps {
   collapsed: boolean;
-  user: User | null;
+  user: Profile | null;
   onLogout: () => void;
 }
 
@@ -19,9 +19,9 @@ export const SidebarUserProfile = ({ collapsed, user, onLogout }: SidebarUserPro
           {collapsed ? (
             /* Collapsed state - Show only avatar */
             <div className="flex justify-center h-full items-center">
-              <Avatar className="w-10 h-10 shrink-0 cursor-pointer hover:scale-105 transition-transform duration-200" title={`${user.user_metadata?.name || user.email} - ${user.user_metadata?.role || "User"}`}>
+              <Avatar className="w-10 h-10 shrink-0 cursor-pointer hover:scale-105 transition-transform duration-200" title={`${user.name || user.email} - ${user.dlks_user_role?.name || "User"}`}>
                 <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold">
-                  {user.email?.charAt(0).toUpperCase() || "U"}
+                  {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
             </div>
@@ -30,18 +30,18 @@ export const SidebarUserProfile = ({ collapsed, user, onLogout }: SidebarUserPro
             <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <Avatar className="w-10 h-10 shrink-0">
                 <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold">
-                  {user.email?.charAt(0).toUpperCase() || "U"}
+                  {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                  {user.user_metadata?.name || user.email}
+                  {user.name || user.email}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  {user.user_metadata?.role || "User"}
+                  {user.dlks_user_role?.name || "User"}
                 </p>
                 <p className="text-xs text-purple-600 dark:text-purple-400 truncate">
-                  {user.user_metadata?.company || "DLKS System"}
+                  DLKS System
                 </p>
               </div>
             </div>

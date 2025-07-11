@@ -357,31 +357,32 @@ const LKHDetail: React.FC = () => {
   // Check if user has permission to edit/modify LKH
   const canEdit =
     user &&
-    (user.user_metadata?.role === "TNB Super Admin" ||
-      user.user_metadata?.permissions?.includes("edit") ||
-      user.user_metadata?.permissions?.includes("manage_users"));
+    (user.dlks_user_role?.name === "TNB Super Admin" ||
+      user.dlks_user_role?.name === "Engineer" ||
+      user.dlks_user_role?.name === "Senior Engineer");
 
   // Check if user has permission to validate/verify documents
   const canValidate =
     user &&
-    (user.user_metadata?.role === "TNB Super Admin" ||
-      user.user_metadata?.role === "Senior Engineer" ||
-      user.user_metadata?.permissions?.includes("validate") ||
-      user.user_metadata?.permissions?.includes("verify"));
+    (user.dlks_user_role?.name === "TNB Super Admin" ||
+      user.dlks_user_role?.name === "Senior Engineer" ||
+      user.dlks_user_role?.name === "Engineer" ||
+      user.dlks_user_role?.name === "Validator");
 
   // Check if user has permission to approve
   const canApprove =
     user &&
-    (user.user_metadata?.role === "TNB Super Admin" ||
-      user.user_metadata?.role === "Senior Engineer" ||
-      user.user_metadata?.permissions?.includes("validate"));
+    (user.dlks_user_role?.name === "TNB Super Admin" ||
+      user.dlks_user_role?.name === "Senior Engineer" ||
+      user.dlks_user_role?.name === "Manager");
 
-  // Check if user has access to AI features - only technician level (level 4) and above
+  // Check if user has access to AI features - technicians and above
   const canUseAI =
     user &&
-    (user.user_metadata?.role === "TNB Super Admin" ||
-      user.user_metadata?.role === "Technician" ||
-      (user.user_metadata?.level && user.user_metadata.level <= 4));
+    (user.dlks_user_role?.name === "TNB Super Admin" ||
+      user.dlks_user_role?.name === "Technician" ||
+      user.dlks_user_role?.name === "Engineer" ||
+      user.dlks_user_role?.name === "Senior Engineer");
   const handleImageValidation = (imageType: string, isValid: boolean) => {
     const action = isValid ? "validated" : "rejected";
     const currentTime = new Date().toISOString();
@@ -389,7 +390,7 @@ const LKHDetail: React.FC = () => {
       ...prev,
       [imageType]: {
         validated: isValid,
-        validatedBy: user?.user_metadata?.name || user?.email || "Unknown",
+        validatedBy: user?.name || user?.email || "Unknown",
         validatedAt: currentTime,
       },
     }));
@@ -402,7 +403,7 @@ const LKHDetail: React.FC = () => {
     });
     console.log(
       `Image validation: ${imageType} - ${action} by ${
-        user?.user_metadata?.name || user?.email
+        user?.name || user?.email
       } at ${currentTime}`
     );
   };

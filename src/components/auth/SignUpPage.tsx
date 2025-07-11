@@ -19,28 +19,28 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { session, signUpNewUser } = UserAuth();
-  const navigate = useNavigate();
-  console.log(email, password, session);
+  // const { session, signUpNewUser } = UserAuth();
+  // const navigate = useNavigate();
+  // console.log(email, password, session);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-    try {
-      const response = await signUpNewUser(email, password);
-      if (response.success) {
-        console.log("Sign up successful:", response.data);
-        navigate("/dashboard");
-      } else {
-        setError(response.error || "An error occurred during sign up.");
-      }
-    } catch (error) {
-      console.error("Unexpected error during sign up:", error);
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
+    // setLoading(true);
+    // setError("");
+    // try {
+    //   const response = await signUpNewUser(email, password);
+    //   if (response.success) {
+    //     console.log("Sign up successful:", response.data);
+    //     navigate("/dashboard");
+    //   } else {
+    //     setError(response.error || "An error occurred during sign up.");
+    //   }
+    // } catch (error) {
+    //   console.error("Unexpected error during sign up:", error);
+    //   setError("An unexpected error occurred.");
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
