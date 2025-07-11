@@ -2,23 +2,24 @@ import { createContext, useEffect, useState, useContext } from "react";
 import type { ReactNode } from "react";
 import { supabase } from "@/integration/supabase/client";
 import { ActivityLogService } from "@/services/activityLogService";
-import type { Session, User } from "@supabase/supabase-js";
+import { AuthService } from "@/services/authService";
+import type { Session } from "@supabase/supabase-js";
+import type { Profile } from "@/types/database";
 
 interface AuthContextType {
   session: Session | null;
-  user: User | null;
+  user: Profile | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  signUpNewUser: (
-    email: string,
-    password: string
-  ) => Promise<{ success: boolean; data?: any; error?: string }>;
+  // signUpNewUser: (
+  //   email: string,
+  //   password: string
+  // ) => Promise<{ success: boolean; data?: any; error?: string }>;
   signInUser: (
     email: string,
     password: string
   ) => Promise<{ success: boolean; data?: any; error?: string }>;
   signOut: () => Promise<void>;
-  login: (email: string, password: string) => Promise<boolean>;
 }
 
 interface AuthContextProviderProps {
@@ -29,102 +30,146 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Profile | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  //Sign Up
-  const signUpNewUser = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-
-    if (error) {
-      console.error("Error signing up:", error.message);
-      return { success: false, error: error.message };
+  // Input validation helper
+  const validateCredentials = (email: string, password: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!email || !password) {
+      return { isValid: false, error: "Email and password are required" };
     }
-    return { success: true, data };
+    
+    if (!emailRegex.test(email)) {
+      return { isValid: false, error: "Please enter a valid email address" };
+    }
+    
+    if (password.length < 6) {
+      return { isValid: false, error: "Password must be at least 6 characters long" };
+    }
+    
+    return { isValid: true };
   };
 
   //Sign In
   const signInUser = async (email: string, password: string) => {
     try {
+      // Validate input
+      const validation = validateCredentials(email, password);
+      if (!validation.isValid) {
+        return { success: false, error: validation.error };
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
+        email: email.trim().toLowerCase(),
         password: password,
       });
 
       if (error) {
-        console.error("Error signing in:", error.message);
-        return { success: false, error: error.message };
+        // Don't expose detailed error messages for security
+        const userFriendlyError = error.message.includes('Invalid login credentials')
+          ? 'Invalid email or password'
+          : 'Unable to sign in. Please try again.';
+        
+        console.error("Authentication failed"); // Don't log sensitive details
+        return { success: false, error: userFriendlyError };
       }
 
-      // Log successful login
+      // Check if user is active before proceeding
       if (data.user) {
-        try {
-          await ActivityLogService.logUserLogin(
-            data.user.id,
-            undefined, // Let the service determine the IP
-            navigator.userAgent
-          );
-        } catch (logError) {
-          console.warn("Failed to log user login:", logError);
+        const isActive = await AuthService.isUserActive(data.user.id);
+        if (!isActive) {
+          await supabase.auth.signOut();
+          return { success: false, error: "Account is deactivated. Please contact administrator." };
         }
+
+        // // Update login timestamp immediately
+        // // Profile will be fetched by onAuthStateChange handler
+        // AuthService.updateLoginTimestamp(data.user.id).catch(error => {
+        //   console.warn("Failed to update login timestamp:", error);
+        // });
       }
 
-      console.log("Sign in successful:", data);
       return { success: true, data };
     } catch (error) {
-      console.error("Unexpected error during sign in:", error);
+      console.error("Unexpected error during authentication");
       return {
         success: false,
-        error: "An unexpected error occurred during sign in",
+        error: "An unexpected error occurred. Please try again.",
       };
     }
   };
 
-  // Login function for compatibility
-  const login = async (email: string, password: string): Promise<boolean> => {
-    const result = await signInUser(email, password);
-    return result.success;
-  };
-
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsAuthenticated(!!session);
-      setIsLoading(false);
-    });
+    let isMounted = true;
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsAuthenticated(!!session);
-      setIsLoading(false);
+      if (!isMounted) return;
 
-      // Log session events
-      if (event === "SIGNED_IN" && session?.user) {
-        try {
-          await ActivityLogService.logUserLogin(
-            session.user.id,
-            undefined, // Let the service determine the IP
-            navigator.userAgent
-          );
-        } catch (logError) {
-          console.warn("Failed to log session login:", logError);
-        }
-      } else if (event === "SIGNED_OUT") {
-        // Logout logging is handled in signOut function
+      console.log('Auth state change event:', event);
+
+      // Handle token expiry events
+      if (event === 'TOKEN_REFRESHED') {
+        console.log('⚠️ Token refreshed automatically (this should not happen with autoRefreshToken: false)');
+      } else if (event === 'SIGNED_OUT') {
+        console.log('User signed out (could be due to token expiry)');
+      } else if (event === 'INITIAL_SESSION') {
+        console.log('Initial session loaded from storage');
+      } else if (event === 'SIGNED_IN') {
+        console.log('User signed in');
       }
+
+      setSession(session);
+      setIsAuthenticated(!!session);
+      
+      // Fetch profile when user signs in or session changes
+      if (session?.user) {
+        // Fetch profile from dlks_profile table
+        AuthService.getUserProfile(session.user.id)
+          .then(userProfile => {
+            if (isMounted) {
+              setUser(userProfile);
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching user profile:", error);
+            if (isMounted) {
+              setUser(null);
+            }
+          });
+      } else {
+        setUser(null);
+      }
+      
+      if (isMounted) {
+        setIsLoading(false);
+      }
+
+      // // Log session events
+      // if (event === "SIGNED_IN" && session?.user) {
+      //   try {
+      //     await ActivityLogService.logUserLogin(
+      //       session.user.id,
+      //       undefined, // Let the service determine the IP
+      //       navigator.userAgent
+      //     );
+      //   } catch (logError) {
+      //     console.warn("Failed to log session login:", logError);
+      //   }
+      // } else if (event === "SIGNED_OUT") {
+      //   // Logout logging is handled in signOut function
+      // }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   //Sign out
@@ -136,17 +181,17 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       console.error("Error signing out:", error.message);
     } else {
       // Log logout before clearing session
-      if (currentUser) {
-        try {
-          await ActivityLogService.logUserLogout(
-            currentUser.id,
-            window.location.hostname,
-            navigator.userAgent
-          );
-        } catch (logError) {
-          console.warn("Failed to log user logout:", logError);
-        }
-      }
+      // if (currentUser) {
+      //   try {
+      //     await ActivityLogService.logUserLogout(
+      //       currentUser.id,
+      //       window.location.hostname,
+      //       navigator.userAgent
+      //     );
+      //   } catch (logError) {
+      //     console.warn("Failed to log user logout:", logError);
+      //   }
+      // }
 
       setSession(null);
       setUser(null);
@@ -161,10 +206,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         user,
         isAuthenticated,
         isLoading,
-        signUpNewUser,
+        // signUpNewUser,
         signInUser,
         signOut,
-        login,
       }}
     >
       {children}

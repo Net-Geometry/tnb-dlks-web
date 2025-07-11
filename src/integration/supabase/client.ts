@@ -3,7 +3,10 @@ import { Database } from "./types";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+// #SECURITY ISSUE HERE
+// Ensure that the service role key is only used server-side and not exposed to the client
+const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;  // Service role key for server-side operations
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error("Missing Supabase environment variables");
@@ -12,7 +15,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
-    detectSessionInUrl: false, // Disable automatic session detection in the URL
+    autoRefreshToken: false, // Disables auto refresh except for very short-lived tokens
+    detectSessionInUrl: false,
+    flowType: 'pkce',
   },
   realtime: {
     params: {
@@ -22,6 +27,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 });
 
 // Service role client for admin operations (server-side only)
+// This client should not be used in the browser to avoid exposing the service role key 
 export const supabaseAdmin = supabaseServiceKey
   ? createClient<Database>(supabaseUrl, supabaseServiceKey, {
       auth: {
